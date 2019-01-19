@@ -10,5 +10,13 @@ type BlockHeader struct {
 
 type Block struct {
 	Header       BlockHeader
-	Transactions Transaction
+	Transactions []*Transaction
+}
+
+func CreateNewBlock(transactions []*Transaction) *Block {
+	return nil
+}
+
+func CreateGenesisBlock(genesisconfFilePath string) (*Block, error) {
+	return nil, nil
 }
