@@ -1,20 +1,16 @@
 package blockchain
 
-import (
-	"sync"
-)
-
 type Blockchain struct {
-	m *sync.RWMutex
 	db *Database
 }
 
 func NewBlockChain(db *Database) *Blockchain {
 	return &Blockchain{
-		db:db,
+		db: db,
 	}
 }
 
-func (b *Blockchain) AddBlock(block *Block){
+// TODO : implement this with testcase
+func (b *Blockchain) AddBlock(block *Block) {
 
 }
