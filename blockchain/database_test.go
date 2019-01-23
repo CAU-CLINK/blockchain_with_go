@@ -1,15 +1,17 @@
-package blockchain
+package blockchain_test
 
 import (
 	"bytes"
 	"os"
 	"testing"
+
+	"github.com/CAU-CLINK/blockchain_with_go/blockchain"
 )
 
 func TestLevelDB_New(t *testing.T) {
 	filePath := "../db/test"
 
-	levelDB, err := NewLevelDB(filePath)
+	levelDB, err := blockchain.NewLevelDB(filePath)
 	defer os.RemoveAll(filePath)
 
 	if err != nil {
@@ -22,7 +24,7 @@ func TestLevelDB_New(t *testing.T) {
 func TestLevelDB_Put(t *testing.T) {
 	filePath := "../db/test"
 
-	levelDB, err := NewLevelDB(filePath)
+	levelDB, err := blockchain.NewLevelDB(filePath)
 	defer os.RemoveAll(filePath)
 
 	if err != nil {
@@ -43,7 +45,7 @@ func TestLevelDB_Put(t *testing.T) {
 func TestLevelDB_Get(t *testing.T) {
 	filePath := "../db/test"
 
-	levelDB, err := NewLevelDB(filePath)
+	levelDB, err := blockchain.NewLevelDB(filePath)
 	defer os.RemoveAll(filePath)
 
 	if err != nil {
@@ -73,7 +75,7 @@ func TestLevelDB_Get(t *testing.T) {
 func TestLevelDB_Tip(t *testing.T) {
 	filePath := "../db/test"
 
-	levelDB, err := NewLevelDB(filePath)
+	levelDB, err := blockchain.NewLevelDB(filePath)
 	defer os.RemoveAll(filePath)
 
 	if err != nil {
