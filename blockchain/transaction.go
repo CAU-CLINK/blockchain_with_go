@@ -1,6 +1,6 @@
 package blockchain
 
-import "blockchain_with_go/script"
+import "github.com/CAU-CLINK/blockchain_with_go/script"
 
 type Transaction struct {
 	TxIn  []TxInput
