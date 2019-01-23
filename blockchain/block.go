@@ -1,11 +1,13 @@
 package blockchain
 
+//uint to int
 type BlockHeader struct {
-	Version           int32
-	PreviousBlockHash []byte
-	MerkleRootHash    []byte
-	Timestamp         uint64
-	Nonce             uint64
+	Version           int32 // original bitcoin spec, use little endian format
+	PreviousBlockHash []byte // 32bytes
+	MerkleRootHash    []byte // 32bytes
+	Timestamp         int32 // original bitcoin spec
+	Nonce             int32 // original bitcoin spec
+	Bits			  int32 // original bitcoin spec
 }
 
 type Block struct {
