@@ -1,18 +1,26 @@
 package blockchain
 
-import "github.com/CAU-CLINK/blockchain_with_go/script"
-
 type Transaction struct {
 	TxIn  []TxInput
 	TxOut []TxOutput
 }
 
-type TxInput struct {
-	Txid      []byte
-	ScriptSig script.ScriptSig
+// TODO: Implements me with test case
+func (tx Transaction) IsCoinbase() bool {
+	return false
 }
 
-type TxOutput struct {
-	Value        uint
-	ScriptPubKey script.ScriptPubKey
+// TODO: Implements me with test case
+func (tx *Transaction) Hash() []byte {
+	return nil
+}
+
+// TODO: Implements me with test case
+func NewCoinbase() *Transaction {
+	return nil
+}
+
+// TODO: Implements me with test case
+func NewTransaction() *Transaction {
+	return nil
 }

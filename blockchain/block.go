@@ -64,6 +64,6 @@ func SetHeader(version int32, previousBlockHash []byte, merkleRootHash []byte) *
 }
 
 // TODO : Implements me with test case
-func (b *Block) GetHash() []byte {
+func (b *Block) Hash() []byte {
 	return nil
 }
