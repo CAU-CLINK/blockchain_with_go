@@ -30,6 +30,6 @@ func TestSetHeader(t *testing.T) {
 }
 
 // TODO : Implements test case
-func TestGetHash(t *testing.T) {
+func TestHash(t *testing.T) {
 
 }

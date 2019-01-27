@@ -38,7 +38,7 @@ func CreateBlockChain(databasePath string, genesisConfFilePath string) (*Blockch
 		return nil, err
 	}
 
-	genesisBlockHash := genesisBlock.GetHash()
+	genesisBlockHash := genesisBlock.Hash()
 	serializedGenesisBlock, err := util.Serialize(genesisBlock)
 	if err != nil {
 		return nil, err
