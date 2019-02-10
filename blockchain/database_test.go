@@ -9,7 +9,7 @@ import (
 )
 
 func TestLevelDB_New(t *testing.T) {
-	filePath := "../db/test"
+	filePath := "../db/test/testDB"
 
 	levelDB, err := blockchain.NewLevelDB(filePath)
 	defer os.RemoveAll(filePath)
@@ -22,7 +22,7 @@ func TestLevelDB_New(t *testing.T) {
 }
 
 func TestLevelDB_Put(t *testing.T) {
-	filePath := "../db/test"
+	filePath := "../db/test/testDB"
 
 	levelDB, err := blockchain.NewLevelDB(filePath)
 	defer os.RemoveAll(filePath)
@@ -43,7 +43,7 @@ func TestLevelDB_Put(t *testing.T) {
 }
 
 func TestLevelDB_Get(t *testing.T) {
-	filePath := "../db/test"
+	filePath := "../db/test/testDB"
 
 	levelDB, err := blockchain.NewLevelDB(filePath)
 	defer os.RemoveAll(filePath)
@@ -73,7 +73,7 @@ func TestLevelDB_Get(t *testing.T) {
 }
 
 func TestLevelDB_Tip(t *testing.T) {
-	filePath := "../db/test"
+	filePath := "../db/test/testDB"
 
 	levelDB, err := blockchain.NewLevelDB(filePath)
 	defer os.RemoveAll(filePath)

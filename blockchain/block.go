@@ -12,8 +12,13 @@ type BlockHeader struct {
 	PreviousBlockHash []byte
 	MerkleRootHash    []byte
 	Timestamp         int64
-	Nonce             int64
 	Bits              int32
+	Nonce             int64
+}
+
+func NewBlockHeader(version int32, previousBlockHash []byte, merkelRootHash []byte, bits int32) *BlockHeader {
+	return &BlockHeader{version, previousBlockHash, merkelRootHash,
+		time.Now().Unix(), bits, 0}
 }
 
 type Block struct {
@@ -21,8 +26,7 @@ type Block struct {
 	Transactions []*Transaction
 }
 
-// TODO : implement this (with pow) with test case
-func CreateNewBlock(blockHeader *BlockHeader, transactions []*Transaction) *Block {
+func NewBlock(blockHeader *BlockHeader, transactions []*Transaction) *Block {
 	block := &Block{blockHeader, transactions}
 	return block
 }
