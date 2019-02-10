@@ -6,11 +6,6 @@ import (
 	"github.com/CAU-CLINK/blockchain_with_go/blockchain"
 )
 
-// TODO : Implements test case
-func TestCreateNewBlock(t *testing.T) {
-
-}
-
 func TestCreateGenesisBlock(t *testing.T) {
 	genesisConfigFilePath := "../db/genesis.json"
 

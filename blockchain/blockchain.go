@@ -3,7 +3,7 @@ package blockchain
 import (
 	"os"
 
-	"github.com/CAU-CLINK/blockchain_with_go/util"
+	"github.com/CAU-CLINK/blockchain_with_go/common"
 )
 
 type Blockchain struct {
@@ -19,8 +19,6 @@ func NewBlockChain(databasePath string, genesisConfFilePath string) (*Blockchain
 	if err != nil {
 		return nil, err
 	}
-
-	defer db.Close()
 
 	return &Blockchain{
 		db: db,
@@ -39,7 +37,7 @@ func CreateBlockChain(databasePath string, genesisConfFilePath string) (*Blockch
 	}
 
 	genesisBlockHash := genesisBlock.Hash()
-	serializedGenesisBlock, err := util.Serialize(genesisBlock)
+	serializedGenesisBlock, err := common.Serialize(genesisBlock)
 	if err != nil {
 		return nil, err
 	}

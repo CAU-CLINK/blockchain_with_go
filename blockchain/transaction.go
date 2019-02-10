@@ -6,6 +6,11 @@ type Transaction struct {
 }
 
 // TODO: Implements me with test case
+func NewTransaction() *Transaction {
+	return nil
+}
+
+// TODO: Implements me with test case
 func (tx Transaction) IsCoinbase() bool {
 	return false
 }
@@ -17,10 +22,5 @@ func (tx *Transaction) Hash() []byte {
 
 // TODO: Implements me with test case
 func NewCoinbase() *Transaction {
-	return nil
-}
-
-// TODO: Implements me with test case
-func NewTransaction() *Transaction {
 	return nil
 }

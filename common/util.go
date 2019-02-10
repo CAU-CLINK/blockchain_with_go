@@ -1,8 +1,11 @@
-package util
+package common
 
 import (
+	"bytes"
+	"encoding/binary"
 	"encoding/json"
 	"fmt"
+	"log"
 )
 
 func Serialize(object interface{}) ([]byte, error) {
@@ -22,4 +25,22 @@ func Deserialize(serializedBytes []byte, object interface{}) error {
 		panic(fmt.Sprintf("Error decoding : %s", err))
 	}
 	return err
+}
+
+func IntToBytes(n interface{}) []byte {
+	buff := new(bytes.Buffer)
+	switch n.(type) {
+	case int64:
+		err := binary.Write(buff, binary.LittleEndian, n.(int64))
+		if err != nil {
+			log.Panic(err)
+		}
+	case int32:
+		err := binary.Write(buff, binary.LittleEndian, n.(int32))
+		if err != nil {
+			log.Panic(err)
+		}
+	}
+
+	return buff.Bytes()
 }
