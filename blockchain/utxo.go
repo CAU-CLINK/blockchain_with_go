@@ -22,8 +22,12 @@ func NewUTXOSet() (*UTXOSet, error) {
 	return &UTXOSet{db: db}, nil
 }
 
+func (u UTXOSet) FindUTXOList(pubkeyHash []byte) UTXOs {
+	return UTXOs{}
+}
+
 // TODO : Implements me w/ test case
-func (u UTXOSet) FindUTXOs(pubkeyHash []byte) UTXOs {
+func (u UTXOSet) FindUTXOs(pubkeyHash []byte, amount int) UTXOs {
 	return UTXOs{}
 }
 

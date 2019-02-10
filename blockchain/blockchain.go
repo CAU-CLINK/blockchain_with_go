@@ -10,7 +10,7 @@ type Blockchain struct {
 	db Database
 }
 
-func NewBlockChain(databasePath string, genesisConfFilePath string) (*Blockchain, error) {
+func New(databasePath string, genesisConfFilePath string) (*Blockchain, error) {
 	if !IsExists(genesisConfFilePath) {
 		return CreateBlockChain(databasePath, genesisConfFilePath)
 	}
@@ -51,8 +51,38 @@ func CreateBlockChain(databasePath string, genesisConfFilePath string) (*Blockch
 }
 
 // TODO : implements me with test case
-func (b *Blockchain) AddBlock(block *Block) {
+func (b *Blockchain) AddBlock(block *Block) error {
+	serializedBlock, err := common.Serialize(block)
+	if err != nil {
+		return err
+	}
 
+	err = b.db.Put(block.Hash(), serializedBlock)
+	if err != nil {
+		return err
+	}
+
+	lastHash, err := b.db.Tip()
+	if err != nil {
+		return err
+	}
+
+	lastSerializedBlock, err := b.db.Get(lastHash)
+	if err != nil {
+		return err
+	}
+
+	var lastBlock Block
+	common.Deserialize(lastSerializedBlock, lastBlock)
+
+	err = b.db.Put([]byte("1"), block.Hash())
+
+	return nil
+}
+
+// TODO : implements me with test case
+func (b *Blockchain) IsValid(block *Block) bool {
+	return false
 }
 
 func IsExists(filePath string) bool {

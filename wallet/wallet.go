@@ -19,3 +19,11 @@ func New() (*Wallet, error) {
 func (w Wallet) GetAddress() []byte {
 	return nil
 }
+
+// Create New Transaction here
+// Get UTXO from UTXOSet and sign by privatekey (scriptSig)
+// After validation, send transaction to miner
+// TODO: Implements me with test case
+func (w Wallet) Send(from string, to string, amount int) {
+
+}

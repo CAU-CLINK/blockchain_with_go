@@ -14,8 +14,13 @@ func TestNewBlockChain(t *testing.T) {
 
 	defer os.RemoveAll(databasePath)
 
-	_, err := blockchain.NewBlockChain(databasePath, genesisConfFilePath)
+	_, err := blockchain.New(databasePath, genesisConfFilePath)
 	if err != nil {
 		t.Error(err)
 	}
+}
+
+// TODO : Implements test case
+func TestBlockchain_AddBlock(t *testing.T) {
+
 }
