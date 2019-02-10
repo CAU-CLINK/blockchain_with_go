@@ -13,6 +13,10 @@ func TestNewUTXOSet(t *testing.T) {
 	assert.NotNil(t, utxoSet)
 }
 
+func TestUTXOSet_FindUTXOList(t *testing.T) {
+
+}
+
 func TestUTXOSet_FindUTXOs(t *testing.T) {
 
 }
