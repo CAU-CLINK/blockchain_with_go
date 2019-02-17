@@ -1,10 +1,11 @@
 package common
 
 import (
+	"log"
+
+	"github.com/btcsuite/btcutil/base58"
 	"github.com/minio/sha256-simd"
 	"golang.org/x/crypto/ripemd160"
-	"log"
-	"github.com/btcsuite/btcutil/base58"
 )
 
 const version = 0x00
