@@ -1,5 +1,9 @@
 package wallet
 
+import (
+	"github.com/CAU-CLINK/blockchain_with_go/common"
+)
+
 type Wallet struct {
 	PrivateKey *PrivateKey
 	PublicKey  *PublicKey
@@ -15,9 +19,10 @@ func New() (*Wallet, error) {
 	return &Wallet{privateKey, publicKey}, nil
 }
 
-// TODO: Implements me with test case
-func (w Wallet) GetAddress() []byte {
-	return nil
+func (w Wallet) GetAddress() string {
+	pubkeyHash := common.PubkeyHash(w.PublicKey.ToBytes())
+	address := common.Base58CheckEncode(pubkeyHash)
+	return address
 }
 
 // Create New Transaction here

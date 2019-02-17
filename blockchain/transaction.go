@@ -1,5 +1,9 @@
 package blockchain
 
+import "github.com/CAU-CLINK/blockchain_with_go/script"
+
+const subsidy = 10
+
 //Version int32
 //LockTime int32
 type Transaction struct {
@@ -17,12 +21,14 @@ func (tx *Transaction) Hash() []byte {
 	return nil
 }
 
-// TODO: Implements me with test case
-func NewCoinbase() *Transaction {
-	return nil
+func NewCoinbase(to string) *Transaction {
+	txin := TxInput{nil, -1, script.ScriptSig{}}
+	txout := NewTxOutput(subsidy, to)
+	tx := Transaction{[]TxInput{txin}, []TxOutput{txout}}
+
+	return &tx
 }
 
-// TODO: Implements me with test case
 func (tx Transaction) IsCoinbase() bool {
-	return false
+	return len(tx.TxIn) == 1 && tx.TxIn[0].Vout == -1
 }

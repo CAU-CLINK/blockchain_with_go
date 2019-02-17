@@ -27,3 +27,7 @@ func (privateKey *PrivateKey) PubKey() *PublicKey {
 type PublicKey struct {
 	*ecdsa.PublicKey
 }
+
+func (pubkey PublicKey) ToBytes() []byte {
+	return append(pubkey.X.Bytes(), pubkey.Y.Bytes()...)
+}
