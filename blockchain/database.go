@@ -4,11 +4,14 @@ import (
 	"sync"
 
 	"github.com/syndtr/goleveldb/leveldb"
+	"github.com/syndtr/goleveldb/leveldb/iterator"
 )
 
 type Database interface {
 	Get(key []byte) ([]byte, error)
 	Put(key []byte, value []byte) error
+	Delete(key []byte) error
+	Iterator() iterator.Iterator
 	Close()
 	Tip() ([]byte, error)
 }
@@ -49,6 +52,25 @@ func (db *LevelDB) Put(key []byte, value []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (db *LevelDB) Delete(key []byte) error {
+	db.Lock()
+	defer db.Unlock()
+
+	err := db.db.Delete(key, nil)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (db *LevelDB) Iterator() iterator.Iterator {
+	db.Lock()
+	defer db.Unlock()
+
+	return db.db.NewIterator(nil, nil)
 }
 
 func (db *LevelDB) Close() {
