@@ -72,6 +72,41 @@ func TestLevelDB_Get(t *testing.T) {
 	levelDB.Close()
 }
 
+func TestLevelDB_Delete(t *testing.T) {
+	filePath := "../db/test/testDB"
+
+	levelDB, err := blockchain.NewLevelDB(filePath)
+	defer os.RemoveAll(filePath)
+
+	if err != nil {
+		t.Error("Fail to open the testDB")
+	}
+
+	key := []byte("key")
+	value := []byte("value")
+
+	err = levelDB.Put(key, value)
+	if err != nil {
+		t.Error("Fail to put the data")
+	}
+
+	err = levelDB.Delete(key)
+	if err != nil {
+		t.Error("Fail to delete the data")
+	}
+
+	data, err := levelDB.Get(key)
+	if data != nil {
+		t.Error("Fail to delete the data")
+	}
+
+	levelDB.Close()
+}
+
+func TestLevelDB_Iterator(t *testing.T) {
+
+}
+
 func TestLevelDB_Tip(t *testing.T) {
 	filePath := "../db/test/testDB"
 
