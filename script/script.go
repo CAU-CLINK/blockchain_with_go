@@ -1,7 +1,7 @@
 package script
 
 type ScriptSig struct {
-	signature  []byte
+	Signature  []byte
 	PubkeyHash []byte
 }
 
