@@ -3,6 +3,8 @@ package blockchain_test
 import (
 	"testing"
 
+	"os"
+
 	"github.com/CAU-CLINK/blockchain_with_go/blockchain"
 	"github.com/stretchr/testify/assert"
 )
@@ -55,7 +57,11 @@ func TestUTXOKey(t *testing.T) {
 }
 
 func TestNewUTXOSet(t *testing.T) {
-	utxoSet, err := blockchain.NewUTXOSet()
+	utxoSetPath := "../db/chainstate"
+
+	utxoSet, err := blockchain.NewUTXOSet(utxoSetPath)
+	defer os.RemoveAll(utxoSetPath)
+
 	assert.NoError(t, err)
 	assert.NotNil(t, utxoSet)
 }

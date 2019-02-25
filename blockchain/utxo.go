@@ -97,8 +97,8 @@ type UTXOSet struct {
 	db Database
 }
 
-func NewUTXOSet() (*UTXOSet, error) {
-	db, err := NewLevelDB("../db/chainstate/")
+func NewUTXOSet(chainstatePath string) (*UTXOSet, error) {
+	db, err := NewLevelDB(chainstatePath)
 	if err != nil {
 		return nil, err
 	}
