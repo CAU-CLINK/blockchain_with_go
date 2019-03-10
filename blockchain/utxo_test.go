@@ -3,11 +3,74 @@ package blockchain_test
 import (
 	"testing"
 
+	"github.com/CAU-CLINK/blockchain_with_go/common"
+
+	"github.com/btcsuite/btcutil/base58"
+
 	"os"
 
 	"github.com/CAU-CLINK/blockchain_with_go/blockchain"
 	"github.com/stretchr/testify/assert"
 )
+
+var utxoSetPath = "../db/test/chainstate/"
+
+func testUTXOset() error {
+	chainstate, err := blockchain.NewLevelDB(utxoSetPath)
+	if err != nil {
+		return err
+	}
+
+	testDBs := []struct {
+		transaction *blockchain.Transaction
+		vout        int
+	}{
+		{
+			transaction: blockchain.NewCoinbase(testAddress),
+			vout:        0,
+		},
+		{
+			transaction: blockchain.NewCoinbase(testAddress),
+			vout:        1,
+		},
+		{
+			transaction: blockchain.NewCoinbase(testAddress),
+			vout:        2,
+		},
+		{
+			transaction: blockchain.NewCoinbase(testAddress),
+			vout:        3,
+		},
+		{
+			transaction: blockchain.NewCoinbase(testAddress),
+			vout:        4,
+		},
+	}
+
+	for _, db := range testDBs {
+		txID, err := db.transaction.Hash()
+		if err != nil {
+			return err
+		}
+		utxoKey, err := blockchain.NewUTXOKey(txID, db.vout)
+		if err != nil {
+			return err
+		}
+
+		utxo := blockchain.NewUTXO(db.transaction.TxOut[0], 0)
+
+		serialiezUTXO, err := common.Serialize(&utxo)
+		if err != nil {
+			return err
+		}
+
+		chainstate.Put(utxoKey.Bytes(), serialiezUTXO)
+	}
+
+	chainstate.Close()
+
+	return nil
+}
 
 func TestUTXOKey(t *testing.T) {
 	tests := []struct {
@@ -71,7 +134,26 @@ func TestUTXOSet_FindUTXOList(t *testing.T) {
 }
 
 func TestUTXOSet_FindUTXOs(t *testing.T) {
+	err := testUTXOset()
+	if err != nil {
+		t.Error(err)
+	}
 
+	defer os.RemoveAll(utxoSetPath)
+
+	utxoSet, err := blockchain.NewUTXOSet(utxoSetPath)
+
+	pubkeyHash := base58.Decode(testAddress)
+	pubkeyHash = pubkeyHash[1 : len(pubkeyHash)-4]
+
+	utxos, err := utxoSet.FindUTXOs(pubkeyHash, 50)
+	if err != nil {
+		t.Error(err)
+	}
+
+	if len(utxos) != 5 {
+		t.Error("Invalid utxo!")
+	}
 }
 
 func TestUTXOSet_Update(t *testing.T) {

@@ -72,8 +72,13 @@ func (b *Blockchain) AddBlock(block *Block) error {
 		return err
 	}
 
-	var lastBlock Block
-	common.Deserialize(lastSerializedBlock, lastBlock)
+	// need to validate of new block with lastBlock!
+	// ex> height, hash, etc...
+	var lastBlock *Block = &Block{}
+	err = common.Deserialize(lastSerializedBlock, lastBlock)
+	if err != nil {
+		return err
+	}
 
 	err = b.db.Put([]byte("1"), block.Hash())
 

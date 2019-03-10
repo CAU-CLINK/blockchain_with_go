@@ -1,0 +1,29 @@
+# github.com/btcsuite/btcutil v0.0.0-20190207003914-4c204d697803
+github.com/btcsuite/btcutil/base58
+# github.com/davecgh/go-spew v1.1.0
+github.com/davecgh/go-spew/spew
+# github.com/golang/snappy v0.0.0-20180518054509-2e65f85255db
+github.com/golang/snappy
+# github.com/minio/sha256-simd v0.0.0-20190131020904-2d45a736cd16
+github.com/minio/sha256-simd
+# github.com/pkg/errors v0.8.1
+github.com/pkg/errors
+# github.com/pmezard/go-difflib v1.0.0
+github.com/pmezard/go-difflib/difflib
+# github.com/stretchr/testify v1.3.0
+github.com/stretchr/testify/assert
+# github.com/syndtr/goleveldb v0.0.0-20181128100959-b001fa50d6b2
+github.com/syndtr/goleveldb/leveldb
+github.com/syndtr/goleveldb/leveldb/iterator
+github.com/syndtr/goleveldb/leveldb/cache
+github.com/syndtr/goleveldb/leveldb/comparer
+github.com/syndtr/goleveldb/leveldb/errors
+github.com/syndtr/goleveldb/leveldb/filter
+github.com/syndtr/goleveldb/leveldb/journal
+github.com/syndtr/goleveldb/leveldb/memdb
+github.com/syndtr/goleveldb/leveldb/opt
+github.com/syndtr/goleveldb/leveldb/storage
+github.com/syndtr/goleveldb/leveldb/table
+github.com/syndtr/goleveldb/leveldb/util
+# golang.org/x/crypto v0.0.0-20190308221718-c2843e01d9a2
+golang.org/x/crypto/ripemd160
