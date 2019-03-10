@@ -1,13 +1,15 @@
 package blockchain
 
 import (
+	"encoding/gob"
 	"encoding/hex"
 	"log"
 	"strconv"
 
+	"github.com/CAU-CLINK/blockchain_with_go/common"
+
 	"bytes"
 
-	"github.com/CAU-CLINK/blockchain_with_go/common"
 	"github.com/pkg/errors"
 )
 
@@ -57,7 +59,7 @@ func (key UTXOKey) Bytes() []byte {
 	return bytes
 }
 
-type UTXOs map[UTXOKey]UTXO
+type UTXOs map[UTXOKey]*UTXO
 
 /*
 origianl
@@ -65,14 +67,14 @@ key : txid
 value : height + value + type + pubkeyhash or pubkey
 */
 type UTXO struct {
-	txOutput TxOutput
-	height   uint
-	typ      string // transaction type
+	TxOutput TxOutput
+	Height   uint
+	Typ      string // transaction type
 }
 
 // TODO: Implements me w/ test case. it must contain height ( can get in coinbase)
-func NewUTXO(output TxOutput) UTXO {
-	return UTXO{}
+func NewUTXO(output TxOutput, height uint) UTXO {
+	return UTXO{output, height, ""}
 }
 
 // TODO: Implements me w/ test case
@@ -81,16 +83,40 @@ func (utxo UTXO) Bytes() []byte {
 }
 
 func (utxo UTXO) Value() uint {
-	return utxo.txOutput.Value
+	return utxo.TxOutput.Value
 }
 
 func (utxo UTXO) PubkeyHash() []byte {
-	return utxo.txOutput.ScriptPubKey.PubkeyHash
+	return utxo.TxOutput.ScriptPubKey.PubkeyHash
 }
 
 func (utxo UTXO) txOut() TxOutput {
-	txOutput := TxOutput{utxo.Value(), utxo.txOutput.ScriptPubKey}
+	txOutput := TxOutput{utxo.Value(), utxo.TxOutput.ScriptPubKey}
 	return txOutput
+}
+
+func (tx *UTXO) Serialize() ([]byte, error) {
+	var encoded bytes.Buffer
+
+	enc := gob.NewEncoder(&encoded)
+	err := enc.Encode(tx)
+	if err != nil {
+		return nil, err
+	}
+
+	return encoded.Bytes(), nil
+}
+
+func DeserializeUtxo(data []byte) (*UTXO, error) {
+	var utxo UTXO
+
+	decoder := gob.NewDecoder(bytes.NewReader(data))
+	err := decoder.Decode(&utxo)
+	if err != nil {
+		return nil, err
+	}
+
+	return &utxo, nil
 }
 
 type UTXOSet struct {
@@ -113,31 +139,32 @@ func (u UTXOSet) FindUTXOList(pubkeyHash []byte) UTXOs {
 
 // TODO : Implements me w/ test case
 func (u UTXOSet) FindUTXOs(pubkeyHash []byte, amount uint) (UTXOs, error) {
-	var utxos UTXOs
+	var utxos UTXOs = make(map[UTXOKey]*UTXO)
 	var acc uint = 0
 
 	db := u.db
 
 	iter := db.Iterator()
 	for iter.Next() {
-		if acc > amount {
-			return utxos, nil
-		}
-
 		key := iter.Key()
 		value := iter.Value()
 
 		utxoKey := hex.EncodeToString(key)
 
-		var utxo UTXO
+		var utxo *UTXO = &UTXO{}
+
 		err := common.Deserialize(value, utxo)
 		if err != nil {
-			log.Panic(err)
+			return nil, err
 		}
 
 		if bytes.Equal(utxo.PubkeyHash(), pubkeyHash) {
 			acc += utxo.Value()
 			utxos[UTXOKey(utxoKey)] = utxo
+		}
+
+		if acc >= amount {
+			return utxos, nil
 		}
 	}
 
@@ -169,7 +196,7 @@ func (u UTXOSet) Update(block *Block) {
 				continue
 			}
 			updatedKey, err := NewUTXOKey(txID, vout)
-			utxo := NewUTXO(out)
+			utxo := NewUTXO(out, 0)
 			db.Put(updatedKey.Bytes(), utxo.Bytes())
 		}
 	}

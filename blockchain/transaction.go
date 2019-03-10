@@ -29,7 +29,7 @@ func NewTransaction(wallet *wallet.Wallet, to string, amount uint, utxos UTXOs) 
 	for key, utxo := range utxos {
 		acc += utxo.Value()
 		/*
-			Neet to sign here!
+			Need to sign here!
 		*/
 		input := TxInput{key.TxID(), key.Vout(), script.ScriptSig{nil, pubKeyHash}}
 		inputs = append(inputs, input)
@@ -47,10 +47,10 @@ func NewTransaction(wallet *wallet.Wallet, to string, amount uint, utxos UTXOs) 
 }
 
 // TODO: Implements me with test case
-func (tx Transaction) Hash() ([]byte, error) {
+func (tx *Transaction) Hash() ([]byte, error) {
 	var hash [32]byte
 
-	serializedTx, err := common.Serialize(tx)
+	serializedTx, err := common.Serialize(&tx)
 	if err != nil {
 		return nil, err
 	}
