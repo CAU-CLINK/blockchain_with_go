@@ -10,3 +10,12 @@
 
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
+
+# Something with IDE of Jetbrains
+.idea/
+
+# MacOS File System
+.DS_Store/
+
+# Vendor
+/vendor
