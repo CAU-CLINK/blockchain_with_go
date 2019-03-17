@@ -28,6 +28,6 @@ type PublicKey struct {
 	*ecdsa.PublicKey
 }
 
-func (pubkey PublicKey) ToBytes() []byte {
+func (pubkey PublicKey) Bytes() []byte {
 	return append(pubkey.X.Bytes(), pubkey.Y.Bytes()...)
 }
