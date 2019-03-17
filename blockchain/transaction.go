@@ -1,15 +1,17 @@
 package blockchain
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/CAU-CLINK/blockchain_with_go/common"
 	"github.com/CAU-CLINK/blockchain_with_go/script"
-	"github.com/CAU-CLINK/blockchain_with_go/wallet"
 	"github.com/minio/sha256-simd"
 )
 
 const subsidy = 10
+
+var ErrAmountExceed = errors.New("Not enough amount")
 
 //Version int32
 //LockTime int32
@@ -19,12 +21,12 @@ type Transaction struct {
 }
 
 // TODO: Implements me with test case
-func NewTransaction(wallet *wallet.Wallet, to string, amount uint, utxos UTXOs) *Transaction {
+func NewTransaction(pubKey []byte, to string, amount uint, utxos UTXOs) (*Transaction, error) {
 	var inputs []TxInput
 	var outputs []TxOutput
 	var acc uint = 0
 
-	pubKeyHash := common.PubkeyHash(wallet.PublicKey.ToBytes())
+	pubKeyHash := common.PubkeyHash(pubKey)
 
 	for key, utxo := range utxos {
 		acc += utxo.Value()
@@ -35,7 +37,13 @@ func NewTransaction(wallet *wallet.Wallet, to string, amount uint, utxos UTXOs) 
 		inputs = append(inputs, input)
 	}
 
-	from := fmt.Sprintf("%s", wallet.GetAddress())
+	if acc < amount {
+		return nil, ErrAmountExceed
+	}
+
+	address := common.Base58CheckEncode(pubKeyHash)
+	from := fmt.Sprintf("%s", address)
+
 	outputs = append(outputs, NewTxOutput(amount, to))
 	if acc > amount {
 		outputs = append(outputs, NewTxOutput(acc-amount, from)) // a change
@@ -43,7 +51,7 @@ func NewTransaction(wallet *wallet.Wallet, to string, amount uint, utxos UTXOs) 
 
 	tx := Transaction{inputs, outputs}
 
-	return &tx
+	return &tx, nil
 }
 
 // TODO: Implements me with test case

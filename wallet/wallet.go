@@ -19,10 +19,14 @@ func New() (*Wallet, error) {
 	return &Wallet{privateKey, publicKey}, nil
 }
 
-func (w Wallet) GetAddress() string {
-	pubkeyHash := common.PubkeyHash(w.PublicKey.ToBytes())
+func (w Wallet) Address() string {
+	pubkeyHash := w.PubKeyHash()
 	address := common.Base58CheckEncode(pubkeyHash)
 	return address
+}
+
+func (w Wallet) PubKeyHash() []byte {
+	return common.PubkeyHash(w.PublicKey.Bytes())
 }
 
 // Create New Transaction here

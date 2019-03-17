@@ -15,7 +15,7 @@ import (
 
 var utxoSetPath = "../db/test/chainstate/"
 
-func testUTXOset() error {
+func testUTXOset(address string) error {
 	chainstate, err := blockchain.NewLevelDB(utxoSetPath)
 	if err != nil {
 		return err
@@ -26,23 +26,23 @@ func testUTXOset() error {
 		vout        int
 	}{
 		{
-			transaction: blockchain.NewCoinbase(testAddress),
+			transaction: blockchain.NewCoinbase(address),
 			vout:        0,
 		},
 		{
-			transaction: blockchain.NewCoinbase(testAddress),
+			transaction: blockchain.NewCoinbase(address),
 			vout:        1,
 		},
 		{
-			transaction: blockchain.NewCoinbase(testAddress),
+			transaction: blockchain.NewCoinbase(address),
 			vout:        2,
 		},
 		{
-			transaction: blockchain.NewCoinbase(testAddress),
+			transaction: blockchain.NewCoinbase(address),
 			vout:        3,
 		},
 		{
-			transaction: blockchain.NewCoinbase(testAddress),
+			transaction: blockchain.NewCoinbase(address),
 			vout:        4,
 		},
 	}
@@ -134,7 +134,7 @@ func TestUTXOSet_FindUTXOList(t *testing.T) {
 }
 
 func TestUTXOSet_FindUTXOs(t *testing.T) {
-	err := testUTXOset()
+	err := testUTXOset(testAddress)
 	if err != nil {
 		t.Error(err)
 	}
