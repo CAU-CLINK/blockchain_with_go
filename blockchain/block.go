@@ -1,9 +1,12 @@
 package blockchain
 
 import (
+	"bytes"
+	"crypto/sha256"
 	"encoding/json"
 	"io/ioutil"
 	"os"
+	"strconv"
 	"time"
 )
 
@@ -69,5 +72,20 @@ func SetHeader(version int32, previousBlockHash []byte, merkleRootHash []byte) *
 
 // TODO : Implements me with test case
 func (b *Block) Hash() []byte {
-	return nil
+
+	timestamp := []byte(strconv.FormatInt(b.Header.Timestamp, 10))
+	verstion := []byte(strconv.FormatInt(int64(b.Header.Version), 10))
+	bit := []byte(strconv.FormatInt(int64(b.Header.Bits), 10))
+	nonce := []byte(strconv.FormatInt(int64(b.Header.Nonce), 10))
+
+	blockHeader := bytes.Join([][]byte{
+		verstion,
+		b.Header.PreviousBlockHash,
+		b.Header.MerkleRootHash,
+		timestamp,
+		bit,
+		nonce},
+		[]byte{})
+	hash := sha256.Sum256(blockHeader)
+	return hash[:]
 }
