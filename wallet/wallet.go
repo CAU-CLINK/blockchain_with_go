@@ -29,6 +29,6 @@ func (w Wallet) GetAddress() string {
 // Get UTXO from UTXOSet and sign by privatekey (scriptSig)
 // After validation, send transaction to miner
 // TODO: Implements me with test case
-func (w Wallet) Send(from string, to string, amount int) {
-
+func (w Wallet) Send(to string, amount uint, utxoSetPath string) error {
+	return nil
 }
