@@ -132,13 +132,13 @@ func NewUTXOSet(chainstatePath string) (*UTXOSet, error) {
 	return &UTXOSet{db: db}, nil
 }
 
+// TODO : Implements me w/ test case
 func (u UTXOSet) FindUTXOList(pubkeyHash []byte) UTXOs {
-
 	return UTXOs{}
 }
 
 // TODO : Implements me w/ test case
-func (u UTXOSet) FindUTXOs(pubkeyHash []byte, amount uint) (UTXOs, error) {
+func (u *UTXOSet) FindUTXOs(pubkeyHash []byte, amount uint) (UTXOs, error) {
 	var utxos UTXOs = make(map[UTXOKey]*UTXO)
 	var acc uint = 0
 
@@ -174,7 +174,7 @@ func (u UTXOSet) FindUTXOs(pubkeyHash []byte, amount uint) (UTXOs, error) {
 // Delete transaction's input (spended)
 // Add transaction's output (utxo)
 // TODO : Refactoring me w/ test case
-func (u UTXOSet) Update(block *Block) {
+func (u *UTXOSet) Update(block *Block) {
 	db := u.db
 
 	for _, tx := range block.Transactions {
@@ -196,8 +196,14 @@ func (u UTXOSet) Update(block *Block) {
 				continue
 			}
 			updatedKey, err := NewUTXOKey(txID, vout)
+
 			utxo := NewUTXO(out, 0)
-			db.Put(updatedKey.Bytes(), utxo.Bytes())
+			serializedUTXO, err := common.Serialize(&utxo)
+			if err != nil {
+				log.Println(err)
+				continue
+			}
+			db.Put(updatedKey.Bytes(), serializedUTXO)
 		}
 	}
 }
