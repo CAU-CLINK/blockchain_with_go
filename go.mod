@@ -6,5 +6,6 @@ require (
 	github.com/pkg/errors v0.8.1
 	github.com/stretchr/testify v1.3.0
 	github.com/syndtr/goleveldb v1.0.0
+	github.com/urfave/cli v1.20.0
 	golang.org/x/crypto v0.0.0-20190313024323-a1f597ede03a
 )
